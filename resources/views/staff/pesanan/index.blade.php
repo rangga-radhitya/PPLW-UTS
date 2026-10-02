@@ -12,7 +12,7 @@
     <a href="{{ url('/staff/pesanan-selesai') }}" class="btn btn-outline-primary btn-sm">Lihat pesanan selesai</a>
   </div>
 
-  <div class="panel" id="orders-live" data-url="{{ url('/staff/pesanan') }}">
+  <div class="panel" id="orders-live" data-url="{{ request()->url() }}">
     @include('staff.pesanan._table', ['orders' => $orders, 'showAction' => true, 'emptyText' => 'Belum ada pesanan masuk. Pesanan baru akan muncul di sini.'])
   </div>
 @endsection

@@ -11,6 +11,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+  <link rel="icon" type="image/png" href="{{ asset('images/logo/logo-bowlmate.png') }}">
   @stack('head')
 </head>
 <body>
@@ -32,7 +33,7 @@
 
   <div class="staff-topbar">
     <button class="btn btn-sm btn-outline-light" data-bs-toggle="offcanvas" data-bs-target="#staffMenu" aria-label="Buka menu"><i class="bi bi-list"></i></button>
-    <strong class="brand text-white">BowlMate Staff</strong>
+    <span class="brand-chip"><img src="{{ asset('images/logo/logo-bowlmate.png') }}" alt="BowlMate" class="brand-logo"></span><strong class="text-white">Staff</strong>
   </div>
   <div class="offcanvas offcanvas-start staff-side" tabindex="-1" id="staffMenu" style="width:260px">
     @include('layouts._staff-sidebar')

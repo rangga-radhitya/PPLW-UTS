@@ -1,0 +1,6 @@
+@extends('layouts.staff')
+@section('title', 'Kelola Menu')
+@section('content')
+<div class="staff-page-heading d-flex justify-content-between"><div><h1>Kelola Menu</h1><p>Tambah, edit, hapus, dan atur ketersediaan menu.</p></div><a href="{{ url('/staff/menu/create') }}" class="btn btn-bowlmate">+ Tambah Menu</a></div>
+<div class="table-responsive card"><table class="table align-middle mb-0"><thead><tr><th>Menu</th><th>Kategori</th><th>Harga</th><th>Ketersediaan</th><th>Aksi</th></tr></thead><tbody>@forelse($menus ?? [] as $menu)<tr><td>{{ data_get($menu,'name') }}</td><td>{{ data_get($menu,'category.name') }}</td><td>Rp{{ number_format((float)data_get($menu,'price',0),0,',','.') }}</td><td>@if(data_get($menu,'is_available'))<span class="badge text-bg-success">Tersedia</span>@else<span class="badge text-bg-secondary">Habis</span>@endif</td><td class="d-flex gap-2"><a href="{{ url('/staff/menu/' . data_get($menu,'id') . '/edit') }}" class="btn btn-sm btn-outline-primary">Edit</a><form method="POST" action="{{ url('/staff/menu/' . data_get($menu,'id')) }}" onsubmit="return confirmDelete('menu ini')">@csrf @method('DELETE')<button class="btn btn-sm btn-outline-danger">Hapus</button></form></td></tr>@empty<tr><td colspan="5" class="text-center py-5">Belum ada menu.</td></tr>@endforelse</tbody></table></div>
+@endsection

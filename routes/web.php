@@ -12,8 +12,10 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+    return auth()->user()->role === 'staff'
+        ? redirect('/staff/pilih-outlet')
+        : redirect('/outlets');
+})->middleware('auth')->name('dashboard');
 
 Route::get('/menu', [MenuController::class, 'index'])->name('customer.menu');
 Route::get('/menu/{id}', [MenuController::class, 'show'])->name('customer.menu.show');

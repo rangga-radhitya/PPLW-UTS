@@ -3,12 +3,24 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Outlet;
 
 class OutletController extends Controller
 {
     public function index()
-{
-    return 'Halaman outlet (masih kosong)';
-}
+    {
+        $outlets = Outlet::all();
+
+        return view('customer.outlet', compact('outlets'));
+    }
+
+    public function meja($id)
+    {
+        $outlet = Outlet::findOrFail($id);
+        $tables = $outlet->tables;
+
+        session(['outlet_id' => $outlet->id]);
+
+        return view('customer.meja', compact('outlet', 'tables'));
+    }
 }

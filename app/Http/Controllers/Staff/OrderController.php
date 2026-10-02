@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Staff;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    //
+    public function index()
+    {
+        return 'Halaman pesanan staff (masih kosong)';
+    }
 }

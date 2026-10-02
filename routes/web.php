@@ -3,6 +3,9 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Customer\MenuController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Customer\OutletController;
+use App\Http\Controllers\Customer\MenuController;
+use App\Http\Controllers\Staff\OrderController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,6 +26,15 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('/menu', [MenuController::class, 'index'])->name('customer.menu');
     Route::get('/menu/{id}', [MenuController::class, 'show'])->name('customer.menu.show');
+});
+
+Route::middleware(['auth', 'role:customer'])->group(function () {
+    Route::get('/outlets', [OutletController::class, 'index'])->name('customer.outlets');
+    Route::get('/menu', [MenuController::class, 'index'])->name('customer.menu');
+});
+
+Route::prefix('staff')->middleware(['auth', 'role:staff'])->group(function () {
+    Route::get('/pesanan', [OrderController::class, 'index'])->name('staff.pesanan');
 });
 
 require __DIR__.'/auth.php';

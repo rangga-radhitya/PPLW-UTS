@@ -25,4 +25,15 @@ class OutletController extends Controller
 
         return redirect()->route('staff.pesanan');
     }
+
+   public function meja($id)
+    {
+    $outlet = \App\Models\Outlet::with('tables')->findOrFail($id);
+    $tables = $outlet->tables;
+
+    session(['outlet_id' => $outlet->id]);
+
+    return view('customer.meja', compact('outlet', 'tables'));
+    }
 }
+

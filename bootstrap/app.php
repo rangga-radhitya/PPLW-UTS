@@ -15,6 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => App\Http\Middleware\RoleMiddleware::class,
         ]);
+        $middleware->redirectUsersTo(fn () => auth()->user()?->role === 'staff'
+            ? '/staff/pilih-outlet'
+            : '/outlets');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

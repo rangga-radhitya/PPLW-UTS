@@ -1,12 +1,36 @@
+{{-- GET /riwayat  |  variabel: $orders (milik user yang login) --}}
 @extends('layouts.customer')
-@section('title', 'Riwayat Pesanan - BowlMate')
+@section('title', 'Riwayat pesanan')
+
 @section('content')
-<div class="page-heading"><h1>Riwayat Pesanan</h1><p>Semua pesananmu.</p></div>
-<div class="stack-list">
-@forelse($orders ?? [] as $order)
-    <a href="{{ url('/pesanan/' . data_get($order,'id')) }}" class="history-card text-decoration-none"><div><strong>#{{ data_get($order,'id') }}</strong><div class="small text-muted">{{ data_get($order,'created_at') }}</div><div class="small">Meja {{ data_get($order,'table.table_number') }}</div></div><div class="text-end"><x-status-badge :status="data_get($order,'status','pending')" /><div class="fw-semibold mt-2">Rp{{ number_format((float)data_get($order,'total',0),0,',','.') }}</div></div></a>
-@empty
-    <div class="empty-state"><div class="empty-icon">🧾</div><h2 class="h5">Belum ada riwayat</h2><p class="text-muted">Pesanan yang sudah dibuat akan muncul di sini.</p></div>
-@endforelse
-</div>
+  <h1 class="page-title">Pesanan saya</h1>
+  <p class="text-muted mb-4">Semua pesanan yang pernah kamu buat.</p>
+
+  @forelse($orders as $order)
+    <a href="{{ url('/pesanan/'.$order->id) }}" class="text-decoration-none text-reset">
+      <div class="summary-box d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+        <div>
+          <div class="fw-bold">Pesanan #{{ $order->id }}</div>
+          <div class="text-muted small">
+            {{ optional($order->outlet)->name }} &middot; Meja {{ optional($order->table)->table_number }}<br>
+            {{ $order->created_at->format('d M Y, H:i') }}
+          </div>
+        </div>
+        <div class="text-end">
+          <x-status-badge :status="$order->status" />
+          <div class="fw-bold mt-1">Rp {{ number_format($order->total, 0, ',', '.') }}</div>
+        </div>
+      </div>
+    </a>
+  @empty
+    <div class="empty-state">
+      <i class="bi bi-receipt"></i>
+      Kamu belum pernah memesan.<br>
+      <a href="{{ url('/outlets') }}" class="btn btn-primary mt-3">Mulai pesan</a>
+    </div>
+  @endforelse
+
+  @if($orders instanceof \Illuminate\Contracts\Pagination\Paginator)
+    {{ $orders->links('pagination::bootstrap-5') }}
+  @endif
 @endsection

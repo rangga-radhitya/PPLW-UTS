@@ -1,6 +1,60 @@
+{{-- GET /staff/pesanan/{id}  |  variabel: $order --}}
 @extends('layouts.staff')
-@section('title', 'Detail Pesanan')
+@section('title', 'Pesanan #'.$order->id)
+
 @section('content')
-<div class="staff-page-heading"><a href="{{ url('/staff/pesanan') }}" class="text-decoration-none">← Kembali</a><h1 class="mt-2">Order #{{ data_get($order,'id','—') }}</h1></div>
-<div class="row g-4"><div class="col-lg-7"><div class="card p-4"><h2 class="h5">Item Pesanan</h2>@forelse(data_get($order,'items',[]) as $item)<div class="summary-row"><span>{{ data_get($item,'menu.name') ?? data_get($item,'name') }} × {{ data_get($item,'quantity',1) }}</span><span>Rp{{ number_format((float)((data_get($item,'price') ?? data_get($item,'menu.price') ?? 0) * data_get($item,'quantity',1)),0,',','.') }}</span></div>@empty<p class="text-muted">Data item belum tersedia.</p>@endforelse</div></div><div class="col-lg-5"><div class="card p-4"><div class="summary-row"><span>Meja</span><strong>{{ data_get($order,'table.table_number','-') }}</strong></div><div class="summary-row"><span>Pembayaran</span><strong>{{ strtoupper(data_get($order,'payment.method','-')) }}</strong></div><div class="summary-row"><span>Status</span><x-status-badge :status="data_get($order,'status','pending')" /></div><hr><form method="POST" action="{{ url('/staff/pesanan/' . data_get($order,'id') . '/status') }}">@csrf @method('PATCH')<label class="form-label">Ubah Status</label><select name="status" class="form-select mb-3"><option value="pending">Pending</option><option value="confirmed">Confirmed</option><option value="processing">Processing</option><option value="ready">Ready</option><option value="done">Done</option></select><button class="btn btn-bowlmate w-100">Simpan Status</button></form></div></div></div>
+  @php $items = $order->items ?? $order->orderItems ?? collect(); @endphp
+
+  <a href="{{ url('/staff/pesanan') }}" class="text-decoration-none small"><i class="bi bi-chevron-left"></i> Kembali ke daftar</a>
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-2 mb-3">
+    <h1 class="page-title mb-0">Pesanan #{{ $order->id }}</h1>
+    <div class="d-flex align-items-center gap-2">
+      <x-status-badge :status="$order->status" />
+      <x-order-action :order="$order" />
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-lg-7">
+      <div class="panel">
+        <h2 class="h5 mb-3">Item pesanan</h2>
+        <div class="table-responsive">
+          <table class="table mb-0">
+            <thead><tr><th>Menu</th><th class="text-center">Jumlah</th><th class="text-end">Harga</th><th class="text-end">Subtotal</th></tr></thead>
+            <tbody>
+              @foreach($items as $item)
+                <tr>
+                  <td>{{ optional($item->menu)->name }}</td>
+                  <td class="text-center">{{ $item->quantity }}</td>
+                  <td class="text-end">Rp {{ number_format($item->price, 0, ',', '.') }}</td>
+                  <td class="text-end">Rp {{ number_format($item->price * $item->quantity, 0, ',', '.') }}</td>
+                </tr>
+              @endforeach
+            </tbody>
+            <tfoot><tr><th colspan="3" class="text-end">Total</th><th class="text-end">Rp {{ number_format($order->total, 0, ',', '.') }}</th></tr></tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="panel">
+        <h2 class="h5 mb-3">Info pesanan</h2>
+        <dl class="row mb-0">
+          <dt class="col-5 text-muted fw-normal">Pelanggan</dt><dd class="col-7">{{ optional($order->user)->name }}</dd>
+          <dt class="col-5 text-muted fw-normal">Telepon</dt><dd class="col-7">{{ optional($order->user)->phone ?: '-' }}</dd>
+          <dt class="col-5 text-muted fw-normal">Outlet</dt><dd class="col-7">{{ optional($order->outlet)->name }}</dd>
+          <dt class="col-5 text-muted fw-normal">Meja</dt><dd class="col-7">{{ optional($order->table)->table_number }}</dd>
+          <dt class="col-5 text-muted fw-normal">Masuk</dt><dd class="col-7">{{ $order->created_at->format('d M Y, H:i') }}</dd>
+          <dt class="col-5 text-muted fw-normal">Pembayaran</dt>
+          <dd class="col-7">
+            @if($order->payment)
+              {{ $order->payment->method === 'qris' ? 'QRIS' : 'Tunai' }}
+              <x-pay-badge :status="$order->payment->status" />
+            @else - @endif
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </div>
 @endsection

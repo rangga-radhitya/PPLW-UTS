@@ -1,6 +1,7 @@
+{{-- GET /staff/menu/create  |  variabel: $categories --}}
 @extends('layouts.staff')
-@section('title', 'Tambah Menu')
+@section('title', 'Tambah menu')
 @section('content')
-<div class="staff-page-heading"><h1>Tambah Menu</h1></div>
-<form method="POST" action="{{ url('/staff/menu') }}" enctype="multipart/form-data" class="card p-4 form-card">@csrf<div class="mb-3"><label class="form-label">Nama Menu</label><input name="name" class="form-control" required></div><div class="mb-3"><label class="form-label">Kategori</label><select name="category_id" class="form-select" required>@foreach($categories ?? [] as $category)<option value="{{ data_get($category,'id') }}">{{ data_get($category,'name') }}</option>@endforeach</select></div><div class="mb-3"><label class="form-label">Deskripsi</label><textarea name="description" class="form-control" rows="4"></textarea></div><div class="mb-3"><label class="form-label">Harga</label><input name="price" type="number" class="form-control" required></div><div class="mb-3"><label class="form-label">Foto</label><input name="image" type="file" class="form-control"></div><div class="form-check mb-3"><input class="form-check-input" type="checkbox" name="is_available" value="1" checked id="available"><label class="form-check-label" for="available">Tersedia</label></div><button class="btn btn-bowlmate">Simpan</button></form>
+  <h1 class="page-title mb-3">Tambah menu</h1>
+  @include('staff.menu._form')
 @endsection

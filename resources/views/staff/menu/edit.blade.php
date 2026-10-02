@@ -1,6 +1,7 @@
+{{-- GET /staff/menu/{id}/edit  |  variabel: $menu, $categories --}}
 @extends('layouts.staff')
-@section('title', 'Edit Menu')
+@section('title', 'Ubah menu')
 @section('content')
-<div class="staff-page-heading"><h1>Edit Menu</h1></div>
-<form method="POST" action="{{ url('/staff/menu/' . data_get($menu,'id')) }}" enctype="multipart/form-data" class="card p-4 form-card">@csrf @method('PUT')<div class="mb-3"><label class="form-label">Nama Menu</label><input name="name" value="{{ data_get($menu,'name') }}" class="form-control" required></div><div class="mb-3"><label class="form-label">Kategori</label><select name="category_id" class="form-select" required>@foreach($categories ?? [] as $category)<option value="{{ data_get($category,'id') }}" @selected((string)data_get($menu,'category_id') === (string)data_get($category,'id'))>{{ data_get($category,'name') }}</option>@endforeach</select></div><div class="mb-3"><label class="form-label">Deskripsi</label><textarea name="description" class="form-control" rows="4">{{ data_get($menu,'description') }}</textarea></div><div class="mb-3"><label class="form-label">Harga</label><input name="price" type="number" value="{{ data_get($menu,'price') }}" class="form-control" required></div><div class="mb-3"><label class="form-label">Foto</label><input name="image" type="file" class="form-control"></div><div class="form-check mb-3"><input class="form-check-input" type="checkbox" name="is_available" value="1" @checked(data_get($menu,'is_available')) id="available"><label class="form-check-label" for="available">Tersedia</label></div><button class="btn btn-bowlmate">Update</button></form>
+  <h1 class="page-title mb-3">Ubah menu</h1>
+  @include('staff.menu._form')
 @endsection

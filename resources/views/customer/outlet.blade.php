@@ -1,16 +1,24 @@
+{{-- GET /outlets  |  variabel: $outlets --}}
 @extends('layouts.customer')
-@section('title', 'Pilih Outlet - BowlMate')
+@section('title', 'Pilih outlet')
+
 @section('content')
-<div class="page-heading"><h1>Pilih Outlet</h1><p>Silakan pilih outlet BowlMate yang kamu kunjungi.</p></div>
-<div class="stack-list">
-@forelse($outlets ?? [] as $outlet)
-    <a class="outlet-card text-decoration-none" href="{{ url('/outlets/' . data_get($outlet,'id') . '/meja') }}">
-        <div><h3>{{ data_get($outlet,'name') }}</h3><p>{{ data_get($outlet,'address') }}</p><small>{{ data_get($outlet,'open_hours') }}</small></div><span>›</span>
-    </a>
-@empty
-    @foreach(['BowlMate Kampus A UNAIR','BowlMate Kampus B UNAIR','BowlMate Kampus C UNAIR'] as $name)
-        <div class="outlet-card"><div><h3>{{ $name }}</h3><p>Alamat outlet akan tampil dari database.</p></div><span>›</span></div>
-    @endforeach
-@endforelse
-</div>
+  <h1 class="page-title">Kamu makan di outlet mana?</h1>
+  <p class="text-muted mb-4">Pilih outlet, lalu pilih nomor mejamu.</p>
+
+  <div class="row g-3">
+    @forelse($outlets as $outlet)
+      <div class="col-md-6 col-lg-4">
+        <div class="outlet-card h-100">
+          <h3>{{ $outlet->name }}</h3>
+          <div class="meta"><i class="bi bi-geo-alt"></i><span>{{ $outlet->address }}</span></div>
+          <div class="meta"><i class="bi bi-clock"></i><span>{{ $outlet->open_hours }}</span></div>
+          <div class="meta"><i class="bi bi-telephone"></i><span>{{ $outlet->phone }}</span></div>
+          <a href="{{ url('/outlets/'.$outlet->id.'/meja') }}" class="btn btn-primary mt-auto">Pilih outlet ini</a>
+        </div>
+      </div>
+    @empty
+      <div class="empty-state"><i class="bi bi-shop"></i>Belum ada outlet yang tersedia.</div>
+    @endforelse
+  </div>
 @endsection

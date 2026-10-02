@@ -1,12 +1,34 @@
+{{-- GET /menu/{id}  |  variabel: $menu --}}
 @extends('layouts.customer')
-@section('title', data_get($menu,'name','Detail Menu'))
+@section('title', $menu->name)
+
 @section('content')
-@php($available = (bool)data_get($menu,'is_available',true))
-<div class="detail-card">
-    @if(data_get($menu,'image'))<img src="{{ asset('images/menu/' . data_get($menu,'image')) }}" class="detail-image" alt="{{ data_get($menu,'name') }}">@else<div class="detail-image placeholder-image">Food Photo</div>@endif
-    <div class="pt-3"><span class="small text-muted">{{ data_get($menu,'category.name') ?? data_get($menu,'category','Menu') }}</span><h1 class="h3">{{ data_get($menu,'name','Menu') }}</h1><div class="menu-price fs-5">Rp{{ number_format((float)data_get($menu,'price',0),0,',','.') }}</div><p class="text-muted mt-3">{{ data_get($menu,'description','Deskripsi menu akan ditampilkan dari database.') }}</p></div>
-    @if($available)
-    <form method="POST" action="{{ url('/keranjang') }}" class="mt-3">@csrf<input type="hidden" name="menu_id" value="{{ data_get($menu,'id') }}"><input type="hidden" name="quantity" value="1"><button class="btn btn-bowlmate w-100">+ Tambahkan ke Keranjang</button></form>
-    @else <button class="btn btn-secondary w-100" disabled>Menu Habis</button>@endif
-</div>
+  <a href="{{ url('/menu') }}" class="text-decoration-none small"><i class="bi bi-chevron-left"></i> Kembali ke menu</a>
+
+  <div class="row g-4 mt-1 align-items-center">
+    <div class="col-md-5">
+      <x-menu-image :image="$menu->image" :name="$menu->name" class="detail-photo" />
+    </div>
+    <div class="col-md-7">
+      @if($menu->category)<span class="bm-badge bm-status-ready mb-2">{{ $menu->category->name }}</span>@endif
+      <h1 class="page-title">{{ $menu->name }}</h1>
+      <p class="text-muted" style="max-width:60ch">{{ $menu->description }}</p>
+      <div class="price-lg mb-3">Rp {{ number_format($menu->price, 0, ',', '.') }}</div>
+
+      @if($menu->is_available)
+        <form method="POST" action="{{ url('/keranjang') }}" class="d-flex flex-wrap align-items-center gap-3">
+          @csrf
+          <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+          <div class="qty" data-qty>
+            <button type="button" data-step="-1" aria-label="Kurangi">&minus;</button>
+            <input type="number" name="quantity" value="1" min="1" max="20" aria-label="Jumlah">
+            <button type="button" data-step="1" aria-label="Tambah">+</button>
+          </div>
+          <button class="btn btn-primary"><i class="bi bi-basket3"></i> Masukkan ke keranjang</button>
+        </form>
+      @else
+        <div class="alert alert-secondary d-inline-block mb-0">Menu ini sedang habis.</div>
+      @endif
+    </div>
+  </div>
 @endsection

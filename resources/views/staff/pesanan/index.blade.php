@@ -1,13 +1,22 @@
+{{-- GET /staff/pesanan  |  variabel: $orders (status aktif)
+     Polling: public/js/staff-orders.js menyegarkan isi #orders-live tiap 5 detik --}}
 @extends('layouts.staff')
-@section('title', 'Pesanan Masuk')
+@section('title', 'Pesanan masuk')
+
 @section('content')
-<div class="staff-page-heading d-flex justify-content-between align-items-center"><div><h1>Pesanan Masuk</h1><p>Kelola pesanan yang masih aktif.</p></div><span class="live-pill">● Live</span></div>
-<div id="staff-order-list" class="table-responsive card"><table class="table align-middle mb-0"><thead><tr><th>Order</th><th>Meja</th><th>Total</th><th>Pembayaran</th><th>Status</th><th>Aksi</th></tr></thead><tbody>
-@forelse($orders ?? [] as $order)
-<tr><td>#{{ data_get($order,'id') }}</td><td>{{ data_get($order,'table.table_number') }}</td><td>Rp{{ number_format((float)data_get($order,'total',0),0,',','.') }}</td><td>{{ strtoupper(data_get($order,'payment.method','-')) }}</td><td><x-status-badge :status="data_get($order,'status','pending')" /></td><td><a class="btn btn-sm btn-outline-primary" href="{{ url('/staff/pesanan/' . data_get($order,'id')) }}">Detail</a></td></tr>
-@empty
-<tr><td colspan="6" class="text-center py-5">Belum ada pesanan masuk.</td></tr>
-@endforelse
-</tbody></table></div>
+  <div class="d-flex justify-content-between align-items-end flex-wrap gap-2 mb-3">
+    <div>
+      <h1 class="page-title">Pesanan masuk</h1>
+      <small class="text-muted"><span class="live-dot"></span>Diperbarui otomatis tiap 5 detik</small>
+    </div>
+    <a href="{{ url('/staff/pesanan-selesai') }}" class="btn btn-outline-primary btn-sm">Lihat pesanan selesai</a>
+  </div>
+
+  <div class="panel" id="orders-live" data-url="{{ url('/staff/pesanan') }}">
+    @include('staff.pesanan._table', ['orders' => $orders, 'showAction' => true, 'emptyText' => 'Belum ada pesanan masuk. Pesanan baru akan muncul di sini.'])
+  </div>
 @endsection
-@push('scripts')<script>window.staffOrderPollingUrl='{{ url('/staff/pesanan/data') }}';</script>@endpush
+
+@push('scripts')
+  <script src="{{ asset('js/staff-orders.js') }}"></script>
+@endpush

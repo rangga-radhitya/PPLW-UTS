@@ -1,6 +1,37 @@
+{{-- GET /staff/meja  |  variabel: $tables (meja milik outlet staff) --}}
 @extends('layouts.staff')
-@section('title', 'Kelola Meja')
+@section('title', 'Kelola meja')
+
 @section('content')
-<div class="staff-page-heading d-flex justify-content-between"><div><h1>Kelola Meja</h1></div><a href="{{ url('/staff/meja/create') }}" class="btn btn-bowlmate">+ Tambah</a></div>
-<div class="table-responsive card"><table class="table align-middle mb-0"><thead><tr><th>Outlet</th><th>Nomor Meja</th><th>Aksi</th></tr></thead><tbody>@forelse($tables ?? [] as $table)<tr><td>{{ data_get($table,'outlet.name') }}</td><td>Meja {{ data_get($table,'table_number') }}</td><td class="d-flex gap-2"><a href="{{ url('/staff/meja/' . data_get($table,'id') . '/edit') }}" class="btn btn-sm btn-outline-primary">Edit</a><form method="POST" action="{{ url('/staff/meja/' . data_get($table,'id')) }}" onsubmit="return confirmDelete('meja ini')">@csrf @method('DELETE')<button class="btn btn-sm btn-outline-danger">Hapus</button></form></td></tr>@empty<tr><td colspan="3" class="text-center py-5">Belum ada meja.</td></tr>@endforelse</tbody></table></div>
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+    <h1 class="page-title mb-0">Meja</h1>
+    <a href="{{ url('/staff/meja/create') }}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Tambah meja</a>
+  </div>
+
+  <div class="panel">
+    @if(count($tables) === 0)
+      <div class="empty-state"><i class="bi bi-grid-3x3-gap"></i>Belum ada meja di outlet ini.</div>
+    @else
+      <div class="table-responsive">
+        <table class="table mb-0">
+          <thead><tr><th>Nomor meja</th><th>Link QR</th><th class="text-end">Aksi</th></tr></thead>
+          <tbody>
+            @foreach($tables as $table)
+              <tr>
+                <td class="fw-semibold">Meja {{ $table->table_number }}</td>
+                <td class="small text-muted">{{ url('/outlets/'.$table->outlet_id.'/meja?no='.$table->table_number) }}</td>
+                <td class="text-end text-nowrap">
+                  <a href="{{ url('/staff/meja/'.$table->id.'/edit') }}" class="btn btn-sm btn-outline-primary">Ubah</a>
+                  <form method="POST" action="{{ url('/staff/meja/'.$table->id) }}" class="d-inline" data-confirm="Hapus meja {{ $table->table_number }}?">
+                    @csrf @method('DELETE')
+                    <button class="btn btn-sm btn-outline-danger">Hapus</button>
+                  </form>
+                </td>
+              </tr>
+            @endforeach
+          </tbody>
+        </table>
+      </div>
+    @endif
+  </div>
 @endsection

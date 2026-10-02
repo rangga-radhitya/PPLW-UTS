@@ -1,7 +1,61 @@
+{{-- GET/PUT /profil  |  variabel: $user
+     Ganti kata sandi memakai route bawaan Breeze: PUT route('password.update') --}}
 @extends('layouts.customer')
-@section('title', 'Profil - BowlMate')
+@section('title', 'Profil')
+
 @section('content')
-<div class="page-heading"><h1>Profil</h1><p>Kelola data akunmu.</p></div>
-<div class="profile-card"><div class="profile-avatar">{{ strtoupper(substr(data_get($user,'name','U'),0,1)) }}</div><h2 class="h5 mt-3">{{ data_get($user,'name','User') }}</h2><p class="text-muted mb-0">{{ data_get($user,'email','-') }}</p></div>
-<div class="stack-list mt-3"><a href="#" class="setting-row">Edit Profil <span>›</span></a><a href="#" class="setting-row">Ganti Password <span>›</span></a><form method="POST" action="{{ url('/logout') }}">@csrf<button class="setting-row w-100 text-start border-0 bg-white text-danger">Logout <span>›</span></button></form></div>
+  <h1 class="page-title mb-4">Profil saya</h1>
+
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <div class="summary-box">
+        <h2 class="h5 mb-3">Data diri</h2>
+        <form method="POST" action="{{ url('/profil') }}">
+          @csrf @method('PUT')
+          <div class="mb-3">
+            <label for="name" class="form-label fw-semibold">Nama</label>
+            <input id="name" type="text" name="name" value="{{ old('name', $user->name) }}" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label fw-semibold">Email</label>
+            <input id="email" type="email" name="email" value="{{ old('email', $user->email) }}" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label for="phone" class="form-label fw-semibold">Nomor HP</label>
+            <input id="phone" type="tel" name="phone" value="{{ old('phone', $user->phone) }}" class="form-control">
+          </div>
+          <button class="btn btn-primary">Simpan perubahan</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="summary-box">
+        <h2 class="h5 mb-3">Ganti kata sandi</h2>
+        <form method="POST" action="{{ route('password.update') }}">
+          @csrf @method('PUT')
+          <div class="mb-3">
+            <label for="current_password" class="form-label fw-semibold">Kata sandi saat ini</label>
+            <input id="current_password" type="password" name="current_password" class="form-control" autocomplete="current-password" required>
+            @error('current_password', 'updatePassword')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
+          </div>
+          <div class="mb-3">
+            <label for="new_password" class="form-label fw-semibold">Kata sandi baru</label>
+            <input id="new_password" type="password" name="password" class="form-control" autocomplete="new-password" required>
+            @error('password', 'updatePassword')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
+          </div>
+          <div class="mb-3">
+            <label for="new_password_confirmation" class="form-label fw-semibold">Ulangi kata sandi baru</label>
+            <input id="new_password_confirmation" type="password" name="password_confirmation" class="form-control" autocomplete="new-password" required>
+          </div>
+          <button class="btn btn-outline-primary">Ganti kata sandi</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <form method="POST" action="{{ route('logout') }}" class="mt-4 d-md-none">
+    @csrf
+    <button class="btn btn-outline-danger w-100"><i class="bi bi-box-arrow-right"></i> Keluar</button>
+  </form>
 @endsection

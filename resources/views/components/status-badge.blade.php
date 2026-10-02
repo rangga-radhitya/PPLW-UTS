@@ -1,5 +1,9 @@
-@props(['status'])
+{{-- Badge status pesanan. Pakai: <x-status-badge :status="$order->status" /> --}}
+@props(['status', 'id' => null])
 @php
-    $labels = ['pending'=>'Pending','confirmed'=>'Confirmed','processing'=>'Processing','ready'=>'Ready','done'=>'Done','paid'=>'Paid'];
+  $labels = [
+    'pending' => 'Menunggu konfirmasi', 'confirmed' => 'Dikonfirmasi', 'processing' => 'Sedang dibuat',
+    'ready' => 'Siap diantar', 'done' => 'Selesai',
+  ];
 @endphp
-<span class="status-badge status-{{ $status }}">{{ $labels[$status] ?? ucfirst($status) }}</span>
+<span @if($id) id="{{ $id }}" @endif {{ $attributes->merge(['class' => 'bm-badge bm-status-'.$status]) }}>{{ $labels[$status] ?? ucfirst($status) }}</span>

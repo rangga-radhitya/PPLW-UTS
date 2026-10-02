@@ -4,8 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Customer\MenuController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Customer\OutletController;
-use App\Http\Controllers\Customer\MenuController;
-use App\Http\Controllers\Staff\OrderController;
+use App\Http\Controllers\Staff\OutletController as StaffOutletController;
+use App\Http\Controllers\Staff\OrderController as StaffOrderController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -34,7 +34,9 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
 });
 
 Route::prefix('staff')->middleware(['auth', 'role:staff'])->group(function () {
-    Route::get('/pesanan', [OrderController::class, 'index'])->name('staff.pesanan');
+    Route::get('/pilih-outlet', [StaffOutletController::class, 'choose'])->name('staff.pilih-outlet');
+    Route::post('/pilih-outlet', [StaffOutletController::class, 'store'])->name('staff.pilih-outlet.simpan');
+    Route::get('/pesanan', [StaffOrderController::class, 'index'])->name('staff.pesanan');
 });
 
 require __DIR__.'/auth.php';

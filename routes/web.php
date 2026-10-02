@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Staff\MenuController as StaffMenuController;
+use App\Http\Controllers\Staff\CategoryController;
+use App\Http\Controllers\Staff\TableController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Customer\OutletController;
@@ -27,6 +30,16 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
 
 Route::prefix('staff')->middleware(['auth', 'role:staff'])->group(function () {
     Route::get('/pesanan', [OrderController::class, 'index'])->name('staff.pesanan');
+    Route::resource('menu', StaffMenuController::class)->except('show')
+    ->names('staff.menu');
+
+Route::resource('kategori', CategoryController::class)->except('show')
+    ->parameters(['kategori' => 'category'])
+    ->names('staff.kategori');
+
+Route::resource('meja', TableController::class)->except('show')
+    ->parameters(['meja' => 'table'])
+    ->names('staff.meja');
 });
 
 require __DIR__.'/auth.php';

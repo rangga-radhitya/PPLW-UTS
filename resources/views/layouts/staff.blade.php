@@ -19,13 +19,27 @@
   $links = [
     ['/staff/pesanan',         'staff/pesanan',         'bi-inboxes',      'Pesanan masuk'],
     ['/staff/pesanan-selesai', 'staff/pesanan-selesai', 'bi-check2-circle','Pesanan selesai'],
-    ['/staff/menu',            'staff/menu*',           'bi-bowl-hot',     'Menu'],
+    ['/staff/menu',            'staff/menu*',           'bi-egg-fried',     'Menu'],
     ['/staff/kategori',        'staff/kategori*',       'bi-tags',         'Kategori'],
     ['/staff/meja',            'staff/meja*',           'bi-grid-3x3-gap', 'Meja'],
     ['/staff/outlet',          'staff/outlet*',         'bi-shop',         'Info outlet'],
     ['/staff/transaksi',       'staff/transaksi*',      'bi-cash-coin',    'Transaksi'],
   ];
-  $outletName = optional(auth()->user()->outlet ?? null)->name;
+  // Nama outlet yang SEDANG dipilih staff di /staff/pilih-outlet (disimpan BE di session).
+  // Dicari dari key session apa pun yang mengandung kata "outlet" (outlet_id, staff_outlet_id, outlet_name, dst).
+  // Kalau belum memilih, jatuh ke outlet bawaan akun staff.
+  $picked = collect(session()->all())->first(fn ($v, $k) => str_contains((string) $k, 'outlet'));
+  $outletName = null;
+  if (is_numeric($picked) && class_exists(\App\Models\Outlet::class)) {
+      $outletName = optional(\App\Models\Outlet::find($picked))->name;
+  } elseif (is_string($picked) && $picked !== '') {
+      $outletName = $picked;
+  } elseif (is_object($picked)) {
+      $outletName = $picked->name ?? null;
+  } elseif (is_array($picked)) {
+      $outletName = $picked['name'] ?? null;
+  }
+  $outletName = $outletName ?? optional(auth()->user()->outlet ?? null)->name;
 @endphp
 
 <div class="staff-shell">

@@ -11,6 +11,19 @@
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
   </div>
 @endif
+@if(session('status') && is_string(session('status')))
+  @php
+    $statusText = [
+      'profile-updated' => 'Profil berhasil diperbarui.',
+      'password-updated' => 'Kata sandi berhasil diganti.',
+      'verification-link-sent' => 'Tautan verifikasi baru sudah dikirim ke emailmu.',
+    ][session('status')] ?? session('status');
+  @endphp
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <i class="bi bi-check-circle me-1"></i> {{ $statusText }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
+  </div>
+@endif
 @if($errors->any())
   <div class="alert alert-danger" role="alert">
     <strong>Periksa lagi isianmu:</strong>

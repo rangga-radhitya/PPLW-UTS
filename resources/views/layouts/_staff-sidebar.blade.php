@@ -6,6 +6,7 @@
   @endforeach
 </nav>
 <div class="mt-auto pt-4">
+  <a class="nav-link {{ request()->is('profil') ? 'active' : '' }}" href="{{ url('/profil') }}"><x-avatar :user="auth()->user()" :size="24" /> Profil saya</a>
   <a class="nav-link" href="{{ url('/staff/pilih-outlet') }}"><i class="bi bi-arrow-left-right"></i> Ganti outlet</a>
   <form method="POST" action="{{ route('logout') }}">@csrf
     <button class="nav-link w-100 border-0 bg-transparent text-start"><i class="bi bi-box-arrow-right"></i> Keluar</button>

@@ -7,6 +7,7 @@ use App\Http\Controllers\Customer\MenuController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Customer\OutletController;
+use App\Http\Controllers\Customer\CartController;
 use App\Http\Controllers\Staff\OrderController as StaffOrderController;
 use App\Http\Controllers\Staff\OutletController as StaffOutletController;
 use App\Http\Controllers\Staff\MenuController as StaffMenuController;
@@ -32,6 +33,11 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('/outlets/{id}/meja', [OutletController::class, 'meja'])->name('customer.meja');
     Route::get('/menu', [MenuController::class, 'index'])->name('customer.menu');
     Route::get('/menu/{id}', [MenuController::class, 'show'])->name('customer.menu.show');
+
+    Route::get('/keranjang', [CartController::class, 'index'])->name('customer.keranjang');
+    Route::post('/keranjang', [CartController::class, 'store'])->name('customer.keranjang.tambah');
+    Route::patch('/keranjang/{id}', [CartController::class, 'update'])->name('customer.keranjang.ubah');
+    Route::delete('/keranjang/{id}', [CartController::class, 'destroy'])->name('customer.keranjang.hapus');
 });
 
 Route::prefix('staff')->middleware(['auth', 'role:staff'])->group(function () {

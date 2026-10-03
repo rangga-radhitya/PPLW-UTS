@@ -11,6 +11,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+  <link rel="icon" type="image/png" href="{{ asset('images/logo/logo-bowlmate.png') }}">
   @stack('head')
 </head>
 <body>
@@ -21,7 +22,7 @@
 
 <nav class="navbar navbar-expand-md bm-nav sticky-top">
   <div class="container">
-    <a class="brand" href="{{ url('/outlets') }}"><i class="bi bi-bowl-hot-fill"></i> BowlMate</a>
+    <a class="brand" href="{{ url('/outlets') }}" aria-label="BowlMate"><img src="{{ asset('images/logo/logo-bowlmate.png') }}" alt="BowlMate" class="brand-logo"></a>
 
     <div class="d-none d-md-flex align-items-center ms-4 me-auto gap-2">
       <a class="nav-link {{ request()->is('outlets*') ? 'active' : '' }}" href="{{ url('/outlets') }}">Outlet</a>
@@ -36,7 +37,7 @@
       </a>
       <div class="dropdown d-none d-md-block">
         <button class="btn btn-sm btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">
-          <i class="bi bi-person-circle"></i> {{ Str::limit(auth()->user()->name ?? 'Akun', 14) }}
+          <x-avatar :user="auth()->user()" :size="22" class="me-1" /> {{ Str::limit(auth()->user()->name ?? 'Akun', 14) }}
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
           <li><a class="dropdown-item" href="{{ url('/profil') }}">Profil saya</a></li>
@@ -64,7 +65,7 @@
 {{-- Navigasi bawah khusus HP --}}
 <nav class="bm-bottomnav d-md-none" aria-label="Navigasi utama">
   <a href="{{ url('/outlets') }}" class="{{ request()->is('outlets*') ? 'active' : '' }}"><i class="bi bi-geo-alt"></i>Outlet</a>
-  <a href="{{ url('/menu') }}" class="{{ request()->is('menu*') ? 'active' : '' }}"><i class="bi bi-bowl-hot"></i>Menu</a>
+  <a href="{{ url('/menu') }}" class="{{ request()->is('menu*') ? 'active' : '' }}"><i class="bi bi-egg-fried"></i>Menu</a>
   <a href="{{ url('/riwayat') }}" class="{{ request()->is('riwayat*', 'pesanan*') ? 'active' : '' }}"><i class="bi bi-receipt"></i>Pesanan</a>
   <a href="{{ url('/profil') }}" class="{{ request()->is('profil*') ? 'active' : '' }}"><i class="bi bi-person"></i>Profil</a>
 </nav>

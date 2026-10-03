@@ -1,4 +1,4 @@
-<a class="brand" href="{{ url('/staff/pesanan') }}"><i class="bi bi-bowl-hot-fill"></i> BowlMate</a>
+<a class="brand brand-chip" href="{{ url('/staff/pesanan') }}" aria-label="BowlMate"><img src="{{ asset('images/logo/logo-bowlmate.png') }}" alt="BowlMate" class="brand-logo"></a>
 @if($outletName)<div class="small mb-3 opacity-75"><i class="bi bi-geo-alt"></i> {{ $outletName }}</div>@endif
 <nav class="nav flex-column gap-1">
   @foreach($links as [$href, $pattern, $icon, $label])
@@ -6,6 +6,7 @@
   @endforeach
 </nav>
 <div class="mt-auto pt-4">
+  <a class="nav-link {{ request()->is('profil') ? 'active' : '' }}" href="{{ url('/profil') }}"><x-avatar :user="auth()->user()" :size="24" /> Profil saya</a>
   <a class="nav-link" href="{{ url('/staff/pilih-outlet') }}"><i class="bi bi-arrow-left-right"></i> Ganti outlet</a>
   <form method="POST" action="{{ route('logout') }}">@csrf
     <button class="nav-link w-100 border-0 bg-transparent text-start"><i class="bi bi-box-arrow-right"></i> Keluar</button>

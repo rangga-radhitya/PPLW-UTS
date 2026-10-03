@@ -10,12 +10,13 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+  <link rel="icon" type="image/png" href="{{ asset('images/logo/logo-bowlmate.png') }}">
 </head>
 <body>
   <div class="auth-wrap">
     <div class="auth-card">
       <div class="text-center mb-4">
-        <a class="brand justify-content-center" href="{{ url('/') }}"><i class="bi bi-bowl-hot-fill"></i> BowlMate</a>
+        <a class="brand justify-content-center" href="{{ url('/') }}" aria-label="BowlMate"><img src="{{ asset('images/logo/logo-bowlmate.png') }}" alt="BowlMate" class="brand-logo brand-logo--lg"></a>
         <p class="text-muted mb-0 mt-1">@yield('subtitle')</p>
       </div>
       <x-flash-alert />

@@ -12,8 +12,16 @@
     <a href="{{ url('/staff/pesanan-selesai') }}" class="btn btn-outline-primary btn-sm">Lihat pesanan selesai</a>
   </div>
 
-  <div class="panel" id="orders-live" data-url="{{ url('/staff/pesanan') }}">
-    @include('staff.pesanan._table', ['orders' => $orders, 'showAction' => true, 'emptyText' => 'Belum ada pesanan masuk. Pesanan baru akan muncul di sini.'])
+  <div id="orders-live" data-url="{{ request()->url() }}">
+    @php $all = collect($orders); @endphp
+    <div class="row g-3 mb-3">
+      <div class="col-4"><div class="stat stat--butter"><i class="bi bi-hourglass-split"></i><div><div class="stat__num">{{ $all->where('status', 'pending')->count() }}</div><div class="stat__label">Menunggu</div></div></div></div>
+      <div class="col-4"><div class="stat stat--rust"><i class="bi bi-fire"></i><div><div class="stat__num">{{ $all->whereIn('status', ['confirmed', 'processing'])->count() }}</div><div class="stat__label">Dibuat</div></div></div></div>
+      <div class="col-4"><div class="stat stat--navy"><i class="bi bi-bell"></i><div><div class="stat__num">{{ $all->where('status', 'ready')->count() }}</div><div class="stat__label">Siap diantar</div></div></div></div>
+    </div>
+    <div class="panel">
+      @include('staff.pesanan._table', ['orders' => $orders, 'showAction' => true, 'emptyText' => 'Belum ada pesanan masuk. Pesanan baru akan muncul di sini.'])
+    </div>
   </div>
 @endsection
 

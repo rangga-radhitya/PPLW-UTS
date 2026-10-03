@@ -3,8 +3,14 @@
 @section('title', 'Menu')
 
 @section('content')
-  <h1 class="page-title">Menu</h1>
-  <p class="text-muted">Pilih rice bowl, tambahan, dan minumanmu.</p>
+  <div class="hero hero--sm gingham mb-3">
+    <div class="hero__card">
+      <div>
+        <h1 class="page-title mb-1">Mau makan apa hari ini?</h1>
+        <p class="text-muted mb-0">Pilih rice bowl, tambahan, dan minumanmu.</p>
+      </div>
+    </div>
+  </div>
 
   <form method="GET" action="{{ url('/menu') }}" class="mb-3">
     @if(request('kategori'))<input type="hidden" name="kategori" value="{{ request('kategori') }}">@endif
@@ -33,4 +39,16 @@
       </div>
     @endforelse
   </div>
+
+  @php
+    $cartItems = collect(session('cart', []));
+    $cartQty = $cartItems->sum(fn ($i) => is_array($i) ? ($i['quantity'] ?? 1) : (int) $i);
+    $cartSum = $cartItems->sum(fn ($i) => is_array($i) ? (($i['price'] ?? 0) * ($i['quantity'] ?? 1)) : 0);
+  @endphp
+  @if($cartQty > 0)
+    <a href="{{ url('/keranjang') }}" class="cart-bar">
+      <span><i class="bi bi-basket3"></i> {{ $cartQty }} item</span>
+      <strong>@if($cartSum > 0)Rp {{ number_format($cartSum, 0, ',', '.') }} &middot; @endif Lihat keranjang</strong>
+    </a>
+  @endif
 @endsection

@@ -10,7 +10,7 @@
 
   <div class="panel">
     @if(count($menus) === 0)
-      <div class="empty-state"><i class="bi bi-bowl-hot"></i>Belum ada menu. Tambahkan menu pertamamu.</div>
+      <div class="empty-state"><i class="bi bi-egg-fried"></i>Belum ada menu. Tambahkan menu pertamamu.</div>
     @else
       <div class="table-responsive">
         <table class="table mb-0">

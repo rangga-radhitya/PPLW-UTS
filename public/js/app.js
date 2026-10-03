@@ -41,4 +41,26 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   });
+
+  // 5. Pratinjau foto profil sebelum disimpan (maks 2 MB)
+  const photoInput = document.querySelector('[data-avatar-input]');
+  const photoBox = document.querySelector('[data-avatar-preview]');
+  if (photoInput && photoBox) {
+    photoInput.addEventListener('change', () => {
+      const file = photoInput.files[0];
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024) {
+        alert('Ukuran foto maksimal 2 MB.');
+        photoInput.value = '';
+        return;
+      }
+      const size = photoBox.dataset.size || 88;
+      const img = document.createElement('img');
+      img.src = URL.createObjectURL(file);
+      img.alt = 'Pratinjau foto';
+      img.className = 'avatar';
+      img.style.cssText = `width:${size}px;height:${size}px`;
+      photoBox.replaceChildren(img);
+    });
+  }
 });

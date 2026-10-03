@@ -3,8 +3,6 @@
 @section('subtitle', 'Masuk untuk mulai memesan')
 
 @section('content')
-  @if(session('status'))<div class="alert alert-success">{{ session('status') }}</div>@endif
-
   <form method="POST" action="{{ route('login') }}" novalidate>
     @csrf
     <div class="mb-3">

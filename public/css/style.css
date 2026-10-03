@@ -168,3 +168,8 @@ h1, h2, h3, h4, h5, .brand, .page-title { font-family: 'Zen Maru Gothic', 'Figtr
 .live-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--bm-rust); margin-right: .4rem; animation: pulse 2s infinite; }
 @keyframes pulse { 50% { opacity: .3; } }
 @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
+
+/* Avatar / foto profil */
+.avatar { border-radius: 50%; object-fit: cover; display: inline-grid; place-items: center; flex-shrink: 0; vertical-align: middle; }
+.avatar--initial { background: var(--bm-butter); color: var(--bm-ink); font-weight: 800; font-family: 'Zen Maru Gothic', 'Figtree', sans-serif; }
+.staff-side .nav-link.active .avatar--initial { background: #fff; }

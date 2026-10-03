@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Customer\OutletController;
 use App\Http\Controllers\Customer\CartController;
+use App\Http\Controllers\Customer\OrderController;
 use App\Http\Controllers\Staff\OrderController as StaffOrderController;
 use App\Http\Controllers\Staff\OutletController as StaffOutletController;
 use App\Http\Controllers\Staff\MenuController as StaffMenuController;
@@ -38,6 +39,12 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::post('/keranjang', [CartController::class, 'store'])->name('customer.keranjang.tambah');
     Route::patch('/keranjang/{id}', [CartController::class, 'update'])->name('customer.keranjang.ubah');
     Route::delete('/keranjang/{id}', [CartController::class, 'destroy'])->name('customer.keranjang.hapus');
+
+        Route::get('/checkout', [OrderController::class, 'checkout'])->name('customer.checkout');
+    Route::post('/pesanan', [OrderController::class, 'store'])->name('customer.pesanan.simpan');
+    Route::get('/pesanan/{id}', [OrderController::class, 'show'])->name('customer.pesanan');
+    Route::get('/pesanan/{id}/status', [OrderController::class, 'status'])->name('customer.pesanan.status');
+    Route::get('/riwayat', [OrderController::class, 'riwayat'])->name('customer.riwayat');
 });
 
 Route::prefix('staff')->middleware(['auth', 'role:staff'])->group(function () {

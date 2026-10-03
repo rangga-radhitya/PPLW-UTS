@@ -18,7 +18,13 @@ class AppServiceProvider extends ServiceProvider
      * Bootstrap any application services.
      */
     public function boot(): void
-    {
-        //
-    }
+   {
+       $host = request()->getHost();
+
+       if (request()->header('X-Forwarded-Proto') === 'https'
+           || str_contains($host, 'trycloudflare.com')
+           || str_contains($host, 'ngrok')) {
+           \Illuminate\Support\Facades\URL::forceScheme('https');
+       }
+   }
 }

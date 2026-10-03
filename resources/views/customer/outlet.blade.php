@@ -18,11 +18,14 @@
     </div>
   </section>
 
-  <ol class="steps mb-4">
-    <li><span><i class="bi bi-qr-code-scan"></i></span><b>Pilih meja</b><small>Scan QR atau pilih nomor</small></li>
-    <li><span><i class="bi bi-egg-fried"></i></span><b>Pesan menu</b><small>Masukkan ke keranjang</small></li>
-    <li><span><i class="bi bi-bell"></i></span><b>Pantau status</b><small>Update otomatis</small></li>
-  </ol>
+  <div class="how mb-4">
+    <div class="how__label">Cara pesan</div>
+    <ol class="how__list">
+      <li><span class="how__num">1</span><p><b>Pilih meja</b> Scan QR atau pilih nomor mejamu.</p></li>
+      <li><span class="how__num">2</span><p><b>Pesan menu</b> Masukkan bowl favoritmu ke keranjang.</p></li>
+      <li><span class="how__num">3</span><p><b>Pantau status</b> Lihat pesananmu diproses langsung di HP.</p></li>
+    </ol>
+  </div>
 
   <h2 class="page-title">Kamu makan di outlet mana?</h2>
   <p class="text-muted mb-4">Pilih outlet, lalu pilih nomor mejamu.</p>

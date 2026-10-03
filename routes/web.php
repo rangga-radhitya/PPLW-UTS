@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Customer\OutletController;
 use App\Http\Controllers\Customer\CartController;
 use App\Http\Controllers\Customer\OrderController;
+use App\Http\Controllers\Staff\TransaksiController;
 use App\Http\Controllers\Staff\OrderController as StaffOrderController;
 use App\Http\Controllers\Staff\OutletController as StaffOutletController;
 use App\Http\Controllers\Staff\MenuController as StaffMenuController;
@@ -40,7 +41,7 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::patch('/keranjang/{id}', [CartController::class, 'update'])->name('customer.keranjang.ubah');
     Route::delete('/keranjang/{id}', [CartController::class, 'destroy'])->name('customer.keranjang.hapus');
 
-        Route::get('/checkout', [OrderController::class, 'checkout'])->name('customer.checkout');
+    Route::get('/checkout', [OrderController::class, 'checkout'])->name('customer.checkout');
     Route::post('/pesanan', [OrderController::class, 'store'])->name('customer.pesanan.simpan');
     Route::get('/pesanan/{id}', [OrderController::class, 'show'])->name('customer.pesanan');
     Route::get('/pesanan/{id}/status', [OrderController::class, 'status'])->name('customer.pesanan.status');
@@ -51,7 +52,18 @@ Route::prefix('staff')->middleware(['auth', 'role:staff'])->group(function () {
     Route::get('/pilih-outlet', [StaffOutletController::class, 'choose'])->name('staff.pilih-outlet');
     Route::post('/pilih-outlet', [StaffOutletController::class, 'store'])->name('staff.pilih-outlet.simpan');
 
+    Route::get('/outlet', [StaffOutletController::class, 'edit'])->name('staff.outlet');
+    Route::put('/outlet', [StaffOutletController::class, 'update'])->name('staff.outlet.ubah');
+
     Route::get('/pesanan', [StaffOrderController::class, 'index'])->name('staff.pesanan');
+    Route::get('/pesanan-selesai', [StaffOrderController::class, 'selesai'])->name('staff.pesanan.selesai');
+    Route::get('/pesanan/{id}', [StaffOrderController::class, 'show'])->name('staff.pesanan.detail');
+
+    Route::patch('/pesanan/{id}/status', [StaffOrderController::class, 'updateStatus'])->name('staff.pesanan.status');
+
+    Route::patch('/menu/{id}/ketersediaan', [StaffMenuController::class, 'ketersediaan'])->name('staff.menu.ketersediaan');
+
+    Route::get('/transaksi', [TransaksiController::class, 'index'])->name('staff.transaksi');
 
     Route::resource('menu', StaffMenuController::class)->except('show')
         ->names('staff.menu');

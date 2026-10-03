@@ -26,14 +26,43 @@ class OutletController extends Controller
         return redirect()->route('staff.pesanan');
     }
 
-   public function meja($id)
+    // Form info outlet
+    // URL: GET /staff/outlet  (variabel: $outlet)
+    public function edit()
     {
-    $outlet = \App\Models\Outlet::with('tables')->findOrFail($id);
-    $tables = $outlet->tables;
+        $outletId = session('staff_outlet_id');
 
-    session(['outlet_id' => $outlet->id]);
+        if (! $outletId) {
+            return redirect()->route('staff.pilih-outlet')
+                ->with('error', 'Pilih outlet dulu.');
+        }
 
-    return view('customer.meja', compact('outlet', 'tables'));
+        $outlet = Outlet::findOrFail($outletId);
+
+        return view('staff.outlet', compact('outlet'));
+    }
+
+    // Simpan perubahan info outlet
+    // URL: PUT /staff/outlet
+    public function update(Request $request)
+    {
+        $outletId = session('staff_outlet_id');
+
+        if (! $outletId) {
+            return redirect()->route('staff.pilih-outlet')
+                ->with('error', 'Pilih outlet dulu.');
+        }
+
+        $data = $request->validate([
+            'name'       => ['required', 'string', 'max:255'],
+            'address'    => ['required', 'string', 'max:500'],
+            'open_hours' => ['required', 'string', 'max:100'],
+            'phone'      => ['nullable', 'string', 'max:30'],
+        ]);
+
+        Outlet::findOrFail($outletId)->update($data);
+
+        return redirect()->route('staff.outlet')
+            ->with('success', 'Info outlet diperbarui.');
     }
 }
-

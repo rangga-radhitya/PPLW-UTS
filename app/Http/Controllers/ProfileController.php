@@ -11,19 +11,19 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
+    // Tampilkan halaman profil
+    // URL: GET /profile    
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        $user = $request->user();
+
+        $view = $user->role === 'staff' ? 'staff.profil' : 'customer.profil';
+
+        return view(view()->exists($view) ? $view : 'profile.edit', compact('user'));
     }
 
-    /**
-     * Update the user's profile information.
-     */
+    // Simpan nama, email, dan telepon
+    // URL: PATCH /profile  (field: name, email, phone)
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $request->user()->fill($request->validated());
@@ -37,11 +37,16 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
-    /**
-     * Delete the user's account.
-     */
+    // Hapus akun (hanya customer)
+    // URL: DELETE /profile  (field: password)
     public function destroy(Request $request): RedirectResponse
     {
+        // Akun staff dibuat lewat seeder, jadi tidak boleh dihapus sendiri
+        if ($request->user()->role === 'staff') {
+            return Redirect::route('profile.edit')
+                ->with('error', 'Akun staff tidak bisa dihapus sendiri.');
+        }
+
         $request->validateWithBag('userDeletion', [
             'password' => ['required', 'current_password'],
         ]);

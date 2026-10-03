@@ -32,6 +32,7 @@
 body { background: var(--bm-rice); color: var(--bm-ink); }
 h1, h2, h3, h4, h5, .brand, .page-title { font-family: 'Zen Maru Gothic', 'Figtree', sans-serif; font-weight: 700; }
 .page-title { font-size: 1.7rem; margin-bottom: .25rem; }
+.page-title::after { content: ''; display: block; width: 44px; height: 4px; border-radius: 4px; background: var(--bm-rust); margin-top: .4rem; }
 .text-muted, .form-text { color: var(--bm-muted) !important; }
 :focus-visible { outline: 3px solid var(--bm-navy); outline-offset: 2px; }
 
@@ -141,7 +142,9 @@ h1, h2, h3, h4, h5, .brand, .page-title { font-family: 'Zen Maru Gothic', 'Figtr
 
 /* Auth */
 .auth-wrap { min-height: 100vh; display: grid; place-items: center; padding: 1.5rem;
-  background: linear-gradient(180deg, var(--bm-butter) 0, var(--bm-rice) 55%); }
+  background-color: var(--bm-rice); }
+.auth-wrap { --gk: color-mix(in srgb, var(--bm-butter) 55%, transparent);
+  background-image: repeating-linear-gradient(0deg, var(--gk) 0 18px, transparent 18px 36px), repeating-linear-gradient(90deg, var(--gk) 0 18px, transparent 18px 36px); }
 .auth-card { width: 100%; max-width: 420px; background: #fff; border-radius: 22px; padding: 2rem 1.5rem; border: 1px solid var(--bm-line); }
 
 /* Staff */
@@ -173,3 +176,50 @@ h1, h2, h3, h4, h5, .brand, .page-title { font-family: 'Zen Maru Gothic', 'Figtr
 .avatar { border-radius: 50%; object-fit: cover; display: inline-grid; place-items: center; flex-shrink: 0; vertical-align: middle; }
 .avatar--initial { background: var(--bm-butter); color: var(--bm-ink); font-weight: 800; font-family: 'Zen Maru Gothic', 'Figtree', sans-serif; }
 .staff-side .nav-link.active .avatar--initial { background: #fff; }
+
+/* ===== Tampilan tambahan: taplak gingham, hero, langkah pesan, ringkasan staff ===== */
+.gingham { --gk: color-mix(in srgb, var(--bm-butter) 60%, transparent); background-color: #fff;
+  background-image: repeating-linear-gradient(0deg, var(--gk) 0 16px, transparent 16px 32px),
+                    repeating-linear-gradient(90deg, var(--gk) 0 16px, transparent 16px 32px); }
+.hero { border-radius: 24px; padding: 1.1rem; border: 1px solid var(--bm-line); }
+.hero__card { background: rgba(255,255,255,.93); border-radius: 18px; padding: 1.4rem 1.5rem; display: flex; align-items: center;
+  justify-content: space-between; gap: 1rem; overflow: hidden; }
+.hero__tag { display: inline-block; background: var(--bm-rust); color: #fff; font-weight: 700; font-size: .75rem; letter-spacing: .04em;
+  text-transform: uppercase; padding: .25rem .8rem; border-radius: 99px; margin-bottom: .6rem; }
+.hero__title { font-size: clamp(1.4rem, 4.5vw, 2.1rem); line-height: 1.2; margin-bottom: .5rem; max-width: 18ch; }
+.hero__photos { position: relative; width: 210px; height: 130px; flex-shrink: 0; }
+.hero__photo { position: absolute; border-radius: 50%; object-fit: cover; border: 4px solid #fff; box-shadow: 0 0 0 3px var(--bm-butter); background: var(--bm-butter-soft); }
+.hero__photo--1 { width: 112px; height: 112px; left: 48px; top: 4px; z-index: 2; }
+.hero__photo--2 { width: 78px; height: 78px; left: 0; bottom: 0; z-index: 1; }
+.hero__photo--3 { width: 78px; height: 78px; right: 0; bottom: 4px; z-index: 3; }
+.hero--sm .hero__card { padding: 1rem 1.25rem; }
+@media (max-width: 575.98px) { .hero__photos { display: none; } .hero { padding: .7rem; } }
+
+.steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; }
+.steps li { background: #fff; border: 1px solid var(--bm-line); border-radius: var(--bm-radius); padding: .9rem .6rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: .15rem; }
+.steps li span { width: 40px; height: 40px; border-radius: 50%; background: var(--bm-butter); color: var(--bm-rust); display: grid; place-items: center; font-size: 1.2rem; margin-bottom: .25rem; }
+.steps li b { font-size: .92rem; }
+.steps li small { color: var(--bm-muted); font-size: .75rem; line-height: 1.25; }
+
+.cart-bar { position: fixed; left: 1rem; right: 1rem; bottom: calc(70px + env(safe-area-inset-bottom)); z-index: 1020; background: var(--bm-rust); color: #fff;
+  border-radius: 99px; padding: .8rem 1.3rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; text-decoration: none;
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--bm-rust) 40%, transparent); font-size: .95rem; }
+.cart-bar:hover { color: #fff; background: var(--bm-rust-dark); }
+@media (min-width: 768px) { .cart-bar { left: auto; right: 2rem; bottom: 2rem; min-width: 340px; } }
+
+.stat { display: flex; align-items: center; gap: .8rem; border-radius: var(--bm-radius); padding: .9rem 1.1rem; height: 100%; }
+.stat > i { font-size: 1.6rem; }
+.stat__num { font-family: 'Zen Maru Gothic', sans-serif; font-weight: 900; font-size: 1.8rem; line-height: 1; }
+.stat__label { font-size: .8rem; font-weight: 600; }
+.stat--butter { background: var(--bm-butter); color: var(--bm-ink); }
+.stat--rust { background: var(--bm-rust-soft); color: var(--bm-rust-dark); }
+.stat--navy { background: var(--bm-navy-soft); color: var(--bm-navy-dark); }
+@media (max-width: 575.98px) { .stat { flex-direction: column; text-align: center; gap: .2rem; padding: .7rem .3rem; } }
+
+/* Gerak halus (dimatikan jika perangkat meminta tanpa animasi) */
+.menu-card, .outlet-card, .btn { transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease; }
+.menu-card:hover, .outlet-card:hover { transform: translateY(-4px); box-shadow: 0 10px 24px color-mix(in srgb, var(--bm-navy) 14%, transparent); }
+.btn:active { transform: scale(.97); }
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.menu-card, .outlet-card, .summary-box, .steps li { animation: rise .45s ease both; }
+@media (prefers-reduced-motion: reduce) { .menu-card, .outlet-card, .summary-box, .steps li { animation: none; } .menu-card:hover, .outlet-card:hover { transform: none; } }

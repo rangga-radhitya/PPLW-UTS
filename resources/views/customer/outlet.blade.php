@@ -3,7 +3,28 @@
 @section('title', 'Pilih outlet')
 
 @section('content')
-  <h1 class="page-title">Kamu makan di outlet mana?</h1>
+  <section class="hero gingham mb-4">
+    <div class="hero__card">
+      <div class="hero__text">
+        <span class="hero__tag">Rice bowl &amp; dine-in</span>
+        <h1 class="hero__title">Lapar? Pesan dari mejamu, tanpa antre.</h1>
+        <p class="text-muted mb-0">Pilih outlet dan nomor meja, lalu bowl favoritmu diantar ke meja.</p>
+      </div>
+      <div class="hero__photos" aria-hidden="true">
+        <x-menu-image name="Chicken Katsu Bowl" class="hero__photo hero__photo--1" />
+        <x-menu-image name="Gyoza" class="hero__photo hero__photo--2" />
+        <x-menu-image name="Matcha Latte" class="hero__photo hero__photo--3" />
+      </div>
+    </div>
+  </section>
+
+  <ol class="steps mb-4">
+    <li><span><i class="bi bi-qr-code-scan"></i></span><b>Pilih meja</b><small>Scan QR atau pilih nomor</small></li>
+    <li><span><i class="bi bi-egg-fried"></i></span><b>Pesan menu</b><small>Masukkan ke keranjang</small></li>
+    <li><span><i class="bi bi-bell"></i></span><b>Pantau status</b><small>Update otomatis</small></li>
+  </ol>
+
+  <h2 class="page-title">Kamu makan di outlet mana?</h2>
   <p class="text-muted mb-4">Pilih outlet, lalu pilih nomor mejamu.</p>
 
   <div class="row g-3">

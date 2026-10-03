@@ -23,26 +23,11 @@
           <span><strong>Tunai</strong><br><small class="text-muted">Bayar langsung ke staff di meja</small></span>
         </label>
 
-        @php
-          $method  = old('payment_method', 'qris');
-          $qrisFile = collect(glob(public_path('images/qris/*.*')) ?: [])->first();
-          $qrisUrl  = $qrisFile ? asset('images/qris/'.rawurlencode(basename($qrisFile))) : null;
-        @endphp
+        @php $method = old('payment_method', 'qris'); @endphp
 
-        {{-- QRIS statis: pembayaran dikonfirmasi manual oleh staff --}}
-        <div class="qris-box mt-3 {{ $method === 'qris' ? '' : 'd-none' }}" data-pay-hint="qris">
-          @if($qrisUrl)
-            <img src="{{ $qrisUrl }}" alt="Kode QRIS BowlMate" class="qris-box__img">
-            <a href="{{ $qrisUrl }}" download class="btn btn-sm btn-outline-primary mt-2"><i class="bi bi-download"></i> Simpan gambar QRIS</a>
-          @endif
-          <div class="qris-box__total">Bayar sebesar <strong>Rp {{ number_format($total, 0, ',', '.') }}</strong></div>
-          <ol class="qris-box__steps">
-            <li>Scan QRIS di atas dengan e-wallet atau mobile banking.</li>
-            <li>Masukkan nominal sesuai total pesanan.</li>
-            <li>Klik <b>Pesan sekarang</b>, lalu tunjukkan bukti pembayaran ke staff agar pesananmu dikonfirmasi.</li>
-          </ol>
+        <div class="alert alert-light border small mt-3 {{ $method === 'qris' ? '' : 'd-none' }}" data-pay-hint="qris">
+          <i class="bi bi-info-circle"></i> Kode QRIS akan tampil di halaman pesananmu setelah kamu menekan <b>Pesan sekarang</b>.
         </div>
-
         <div class="alert alert-light border small mt-3 {{ $method === 'cash' ? '' : 'd-none' }}" data-pay-hint="cash">Siapkan uang pas atau kembalian akan diberikan oleh staff.</div>
       </div>
 

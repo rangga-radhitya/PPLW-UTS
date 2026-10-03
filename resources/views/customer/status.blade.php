@@ -37,7 +37,9 @@
       <br><small class="text-muted"><span class="live-dot"></span>Diperbarui otomatis</small></p>
   </div>
 
-  <div class="summary-box" style="max-width:640px">
+  <div class="row g-3 align-items-start">
+  <div class="col-lg-7">
+  <div class="summary-box">
     <h2 class="h5 mb-3">Rincian pesanan</h2>
     @foreach($items as $item)
       <div class="d-flex justify-content-between mb-2">
@@ -53,6 +55,32 @@
         <x-pay-badge :status="$payment->status" id="payment-badge" />
       </div>
     @endif
+  </div>
+  </div>
+
+  @if($payment && $payment->method === 'qris')
+    @php
+      $qrisFile = collect(glob(public_path('images/qris/*.*')) ?: [])->first();
+      $qrisUrl  = $qrisFile ? asset('images/qris/'.rawurlencode(basename($qrisFile))) : null;
+      $hideQr   = $payment->status === 'paid' || $order->status !== 'pending';
+    @endphp
+    <div class="col-lg-5 {{ $hideQr ? 'd-none' : '' }}" id="qris-panel">
+      <div class="qris-box">
+        <h2 class="h5 mb-2">Bayar dengan QRIS</h2>
+        @if($qrisUrl)
+          <img src="{{ $qrisUrl }}" alt="Kode QRIS BowlMate" class="qris-box__img">
+          <a href="{{ $qrisUrl }}" download class="btn btn-sm btn-outline-primary mt-2"><i class="bi bi-download"></i> Simpan gambar QRIS</a>
+        @endif
+        <div class="qris-box__total">Bayar sebesar <strong>Rp {{ number_format($order->total, 0, ',', '.') }}</strong></div>
+        <ol class="qris-box__steps">
+          <li>Scan QRIS di atas dengan e-wallet atau mobile banking.</li>
+          <li>Masukkan nominal sesuai total pesanan.</li>
+          <li>Tunjukkan bukti pembayaran ke staff dan sebutkan <b>Pesanan #{{ $order->id }}</b>.</li>
+        </ol>
+        <div class="small text-muted mt-2">Pesananmu mulai dibuat setelah staff mengonfirmasi pembayaran.</div>
+      </div>
+    </div>
+  @endif
   </div>
 @endsection
 

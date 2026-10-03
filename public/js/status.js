@@ -38,6 +38,10 @@
       pay.className = 'bm-badge bm-pay-' + payStatus;
     }
 
+    // Kotak QRIS hilang setelah pembayaran lunas atau pesanan diterima staff
+    const qr = document.getElementById('qris-panel');
+    if (qr && (payStatus === 'paid' || status !== 'pending')) qr.classList.add('d-none');
+
     if (status === 'done') clearInterval(timer);
   }
 

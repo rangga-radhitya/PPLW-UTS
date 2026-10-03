@@ -78,4 +78,18 @@ class MenuController extends Controller
             'is_available' => 'required|in:0,1',
         ]);
     }
+
+    // Ubah ketersediaan menu
+    // URL: PATCH /staff/menu/{id}/ketersediaan  (field: is_available)
+    public function ketersediaan(\Illuminate\Http\Request $request, $id)
+    {
+        $data = $request->validate([
+            'is_available' => ['required', 'boolean'],
+        ]);
+
+        $menu = \App\Models\Menu::findOrFail($id);
+        $menu->update(['is_available' => $data['is_available']]);
+
+        return back()->with('success', $menu->name . ($menu->is_available ? ' tersedia lagi.' : ' ditandai habis.'));
+    }
 }

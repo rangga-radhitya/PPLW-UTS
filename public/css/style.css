@@ -234,3 +234,12 @@ h1, h2, h3, h4, h5, .brand, .page-title { font-family: 'Zen Maru Gothic', 'Figtr
 @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 .menu-card, .outlet-card, .summary-box { animation: rise .45s ease both; }
 @media (prefers-reduced-motion: reduce) { .menu-card, .outlet-card, .summary-box { animation: none; } .menu-card:hover, .outlet-card:hover { transform: none; } }
+
+/* Kotak QRIS di checkout */
+.qris-box { background: var(--bm-butter-soft); border: 2px dashed var(--bm-butter-dark); border-radius: var(--bm-radius); padding: 1.1rem; text-align: center; }
+.qris-box__img { width: 100%; max-width: 260px; height: auto; background: #fff; padding: .6rem; border-radius: 14px; border: 1px solid var(--bm-line); display: block; margin: 0 auto; }
+.qris-box__total { margin: .9rem 0 .5rem; font-size: 1.05rem; }
+.qris-box__total strong { color: var(--bm-rust); font-size: 1.3rem; }
+.qris-box__steps { text-align: left; font-size: .85rem; color: var(--bm-muted); margin: 0 auto; padding-left: 1.2rem; max-width: 380px; }
+.pay-option .form-check-input { background-color: #fff; border-color: var(--bm-navy); }
+.pay-option .form-check-input:checked { background-color: var(--bm-rust); border-color: var(--bm-rust); }

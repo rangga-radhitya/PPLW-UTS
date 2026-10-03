@@ -195,11 +195,22 @@ h1, h2, h3, h4, h5, .brand, .page-title { font-family: 'Zen Maru Gothic', 'Figtr
 .hero--sm .hero__card { padding: 1rem 1.25rem; }
 @media (max-width: 575.98px) { .hero__photos { display: none; } .hero { padding: .7rem; } }
 
-.steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; }
-.steps li { background: #fff; border: 1px solid var(--bm-line); border-radius: var(--bm-radius); padding: .9rem .6rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: .15rem; }
-.steps li span { width: 40px; height: 40px; border-radius: 50%; background: var(--bm-butter); color: var(--bm-rust); display: grid; place-items: center; font-size: 1.2rem; margin-bottom: .25rem; }
-.steps li b { font-size: .92rem; }
-.steps li small { color: var(--bm-muted); font-size: .75rem; line-height: 1.25; }
+/* Cara pesan: murni informasi (tanpa kotak/border/ikon bulat supaya tidak terlihat bisa ditekan) */
+.how { padding: 0 .25rem; cursor: default; user-select: none; }
+.how__label { font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--bm-muted); margin-bottom: .6rem; }
+.how__list { list-style: none; margin: 0; padding: 0; display: flex; }
+.how__list li { flex: 1; display: flex; gap: .7rem; align-items: flex-start; padding: 0 1rem; }
+.how__list li:first-child { padding-left: 0; }
+.how__list li + li { border-left: 1px dashed var(--bm-line); }
+.how__num { font-family: 'Zen Maru Gothic', sans-serif; font-weight: 900; font-size: 2rem; line-height: 1; color: var(--bm-rust); }
+.how__list p { margin: 0; font-size: .85rem; color: var(--bm-muted); line-height: 1.4; }
+.how__list p b { display: block; color: var(--bm-ink); font-size: .95rem; margin-bottom: .1rem; }
+@media (max-width: 575.98px) {
+  .how__list { flex-direction: column; gap: .75rem; }
+  .how__list li { padding: 0; align-items: center; }
+  .how__list li + li { border-left: 0; }
+  .how__num { width: 1.4rem; text-align: center; font-size: 1.6rem; }
+}
 
 .cart-bar { position: fixed; left: 1rem; right: 1rem; bottom: calc(70px + env(safe-area-inset-bottom)); z-index: 1020; background: var(--bm-rust); color: #fff;
   border-radius: 99px; padding: .8rem 1.3rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; text-decoration: none;
@@ -221,5 +232,5 @@ h1, h2, h3, h4, h5, .brand, .page-title { font-family: 'Zen Maru Gothic', 'Figtr
 .menu-card:hover, .outlet-card:hover { transform: translateY(-4px); box-shadow: 0 10px 24px color-mix(in srgb, var(--bm-navy) 14%, transparent); }
 .btn:active { transform: scale(.97); }
 @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-.menu-card, .outlet-card, .summary-box, .steps li { animation: rise .45s ease both; }
-@media (prefers-reduced-motion: reduce) { .menu-card, .outlet-card, .summary-box, .steps li { animation: none; } .menu-card:hover, .outlet-card:hover { transform: none; } }
+.menu-card, .outlet-card, .summary-box { animation: rise .45s ease both; }
+@media (prefers-reduced-motion: reduce) { .menu-card, .outlet-card, .summary-box { animation: none; } .menu-card:hover, .outlet-card:hover { transform: none; } }

@@ -3,7 +3,7 @@
 @section('title', 'Pesanan selesai')
 
 @section('content')
-  <h1 class="page-title mb-3">Pesanan selesai</h1>
+  <div class="page-head"><div><h1 class="page-title">Pesanan Selesai</h1><p class="text-muted mb-0">Riwayat pesanan yang sudah selesai dilayani.</p></div></div>
   <div class="panel">
     @include('staff.pesanan._table', ['orders' => $orders, 'showAction' => false, 'emptyText' => 'Belum ada pesanan yang selesai.'])
   </div>

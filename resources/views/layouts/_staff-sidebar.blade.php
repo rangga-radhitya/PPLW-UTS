@@ -1,14 +1,18 @@
-<a class="brand brand-chip" href="{{ url('/staff/pesanan') }}" aria-label="BowlMate"><img src="{{ asset('images/logo/logo-bowlmate.png') }}" alt="BowlMate" class="brand-logo"></a>
-@if($outletName)<div class="small mb-3 opacity-75"><i class="bi bi-geo-alt"></i> {{ $outletName }}</div>@endif
+<a class="staff-logo" href="{{ url('/staff/pesanan') }}" aria-label="BowlMate Staff">
+  <span class="staff-logo__icon"><i class="bi bi-egg-fried"></i></span>
+  <span><b>BowlMate Staff</b><small>Operational Hub</small></span>
+</a>
 <nav class="nav flex-column gap-1">
   @foreach($links as [$href, $pattern, $icon, $label])
     <a class="nav-link {{ request()->is($pattern) ? 'active' : '' }}" href="{{ url($href) }}"><i class="bi {{ $icon }}"></i> {{ $label }}</a>
   @endforeach
 </nav>
-<div class="mt-auto pt-4">
-  <a class="nav-link {{ request()->is('profil') ? 'active' : '' }}" href="{{ url('/profil') }}"><x-avatar :user="auth()->user()" :size="24" /> Profil saya</a>
-  <a class="nav-link" href="{{ url('/staff/pilih-outlet') }}"><i class="bi bi-arrow-left-right"></i> Ganti outlet</a>
-  <form method="POST" action="{{ route('logout') }}">@csrf
-    <button class="nav-link w-100 border-0 bg-transparent text-start"><i class="bi bi-box-arrow-right"></i> Keluar</button>
+<div class="staff-side__bottom">
+  <a class="staff-side__btn" href="{{ url('/staff/pilih-outlet') }}"><i class="bi bi-arrow-left-right"></i> Ganti Outlet</a>
+  <a class="nav-link {{ request()->is('profil') ? 'active' : '' }}" href="{{ url('/profil') }}"><x-avatar :user="auth()->user()" :size="24" /> Profil Staf</a>
+  <form method="POST" action="{{ route('logout') }}"
+        data-confirm="Kamu akan keluar dari sesi staff di perangkat ini." data-confirm-title="Keluar dari akun?" data-confirm-ok="Keluar" data-confirm-danger>
+    @csrf
+    <button class="nav-link nav-link--danger w-100 border-0 bg-transparent text-start"><i class="bi bi-box-arrow-right"></i> Keluar</button>
   </form>
 </div>

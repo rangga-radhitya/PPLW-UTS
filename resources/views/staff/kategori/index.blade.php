@@ -21,7 +21,7 @@
                 <td class="fw-semibold">{{ $category->name }}</td>
                 <td class="text-end text-nowrap">
                   <a href="{{ url('/staff/kategori/'.$category->id.'/edit') }}" class="btn btn-sm btn-outline-primary">Ubah</a>
-                  <form method="POST" action="{{ url('/staff/kategori/'.$category->id) }}" class="d-inline" data-confirm="Hapus kategori {{ $category->name }}? Menu di dalamnya bisa ikut terpengaruh.">
+                  <form method="POST" action="{{ url('/staff/kategori/'.$category->id) }}" class="d-inline" data-confirm="Hapus kategori {{ $category->name }}? Menu di dalamnya bisa ikut terpengaruh." data-confirm-title="Hapus data?" data-confirm-ok="Ya, hapus" data-confirm-danger>
                     @csrf @method('DELETE')
                     <button class="btn btn-sm btn-outline-danger">Hapus</button>
                   </form>

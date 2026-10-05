@@ -22,7 +22,7 @@
                 <td class="small text-muted">{{ url('/outlets/'.$table->outlet_id.'/meja?no='.$table->table_number) }}</td>
                 <td class="text-end text-nowrap">
                   <a href="{{ url('/staff/meja/'.$table->id.'/edit') }}" class="btn btn-sm btn-outline-primary">Ubah</a>
-                  <form method="POST" action="{{ url('/staff/meja/'.$table->id) }}" class="d-inline" data-confirm="Hapus meja {{ $table->table_number }}?">
+                  <form method="POST" action="{{ url('/staff/meja/'.$table->id) }}" class="d-inline" data-confirm="Hapus meja {{ $table->table_number }}?" data-confirm-title="Hapus data?" data-confirm-ok="Ya, hapus" data-confirm-danger>
                     @csrf @method('DELETE')
                     <button class="btn btn-sm btn-outline-danger">Hapus</button>
                   </form>

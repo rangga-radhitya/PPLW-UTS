@@ -1,62 +1,80 @@
-{{-- GET /keranjang  |  variabel: $cart, $total
-     Asumsi bentuk $cart (dari session): [ menu_id => ['name'=>..., 'price'=>..., 'quantity'=>..., 'image'=>...], ... ] --}}
+{{-- GET /keranjang  |  variabel: $cart, $total  (Figma: My Cart)
+     Asumsi $cart (session): [ menu_id => ['name','price','quantity','image'], ... ] --}}
 @extends('layouts.customer')
 @section('title', 'Keranjang')
 
 @section('content')
-  <h1 class="page-title">Keranjang</h1>
+  <div data-live-slot="cart-live">
+    @php $count = is_countable($cart) ? count($cart) : 0; $items = collect($cart)->sum(fn ($i) => data_get($i, 'quantity', 1)); @endphp
 
-  @if(empty($cart) || count($cart) === 0)
-    <div class="empty-state">
-      <i class="bi bi-basket3"></i>
-      Keranjangmu masih kosong.<br>
-      <a href="{{ url('/menu') }}" class="btn btn-primary mt-3">Lihat menu</a>
+    <div class="d-flex align-items-center gap-2 mb-2">
+      <h1 class="page-title mb-0">Keranjangku</h1>
+      @if($count > 0)<span class="pill pill--butter">{{ $items }} item</span>@endif
     </div>
-  @else
-    <div class="row g-4">
-      <div class="col-lg-8">
-        @foreach($cart as $id => $item)
-          @php
-            $price = data_get($item, 'price', 0);
-            $qty   = data_get($item, 'quantity', 1);
-          @endphp
-          <div class="cart-row">
-            <x-menu-image :image="data_get($item, 'image')" :name="data_get($item, 'name')" />
-            <div class="grow">
-              <div class="fw-bold">{{ data_get($item, 'name') }}</div>
-              <div class="text-muted small">Rp {{ number_format($price, 0, ',', '.') }}</div>
-              <div class="fw-bold text-end d-md-none">Rp {{ number_format($price * $qty, 0, ',', '.') }}</div>
-            </div>
 
-            <form method="POST" action="{{ url('/keranjang/'.$id) }}">
-              @csrf @method('PATCH')
-              <div class="qty" data-qty data-autosubmit>
-                <button type="button" data-step="-1" aria-label="Kurangi">&minus;</button>
-                <input type="number" name="quantity" value="{{ $qty }}" min="1" max="20" aria-label="Jumlah">
-                <button type="button" data-step="1" aria-label="Tambah">+</button>
-              </div>
-            </form>
-
-            <div class="fw-bold d-none d-md-block text-end" style="min-width:110px">Rp {{ number_format($price * $qty, 0, ',', '.') }}</div>
-
-            <form method="POST" action="{{ url('/keranjang/'.$id) }}" data-confirm="Hapus {{ data_get($item, 'name') }} dari keranjang?">
-              @csrf @method('DELETE')
-              <button class="btn btn-sm btn-outline-danger" aria-label="Hapus"><i class="bi bi-trash"></i></button>
-            </form>
-          </div>
-        @endforeach
-        <a href="{{ url('/menu') }}" class="text-decoration-none"><i class="bi bi-plus-lg"></i> Tambah menu lain</a>
+    @if($count === 0)
+      <div class="empty-state">
+        <span class="empty-state__bowl"><i class="bi bi-basket3"></i></span>
+        <h2 class="h5 mt-2">Keranjangmu masih kosong</h2>
+        <p>Yuk pilih rice bowl favoritmu dulu.</p>
+        <a href="{{ url('/menu') }}" class="btn btn-primary"><i class="bi bi-egg-fried"></i> Lihat menu</a>
+      </div>
+    @else
+      @php $mejaNo = trim(\Illuminate\Support\Facades\Blade::render('<x-table-no />')); $outletNm = trim(\Illuminate\Support\Facades\Blade::render('<x-outlet-name />')); @endphp
+      <div class="context-pill mb-3">
+        <b class="text-navy">DINE-IN</b>
+        @if($outletNm !== '')<span>{{ $outletNm }}</span>@endif
+        @if($mejaNo !== '')<b class="text-rust">Meja {{ $mejaNo }}</b>@endif
+        <a href="{{ url('/menu') }}" class="ms-auto text-rust fw-bold text-decoration-none"><i class="bi bi-plus-circle"></i> Tambah menu</a>
       </div>
 
-      <div class="col-lg-4">
-        <div class="summary-box">
-          <h2 class="h5">Ringkasan</h2>
-          <div class="d-flex justify-content-between my-3">
-            <span>Total</span><span class="price-lg">Rp {{ number_format($total, 0, ',', '.') }}</span>
+      <div class="row g-3">
+        <div class="col-lg-7">
+          @foreach($cart as $id => $item)
+            @php $price = data_get($item, 'price', 0); $qty = data_get($item, 'quantity', 1); @endphp
+            <div class="cart-row">
+              <x-menu-image :image="data_get($item, 'image')" :name="data_get($item, 'name')" />
+              <div class="grow">
+                <div class="d-flex justify-content-between gap-2">
+                  <div class="cart-row__name">{{ data_get($item, 'name') }}</div>
+                  <form method="POST" action="{{ url('/keranjang/'.$id) }}" data-live data-live-remove=".cart-row" data-live-toast="Menu dihapus dari keranjang">
+                    @csrf @method('DELETE')
+                    <button class="icon-btn" aria-label="Hapus {{ data_get($item, 'name') }}"><i class="bi bi-trash3"></i></button>
+                  </form>
+                </div>
+                <div class="cart-row__unit">Satuan Rp{{ number_format($price, 0, ',', '.') }}</div>
+                <div class="d-flex justify-content-between align-items-center mt-1">
+                  <div class="cart-row__sum">Rp{{ number_format($price * $qty, 0, ',', '.') }}</div>
+                  <form method="POST" action="{{ url('/keranjang/'.$id) }}" data-live data-live-toast="Jumlah diperbarui">
+                    @csrf @method('PATCH')
+                    <div class="qty qty--lg" data-qty data-autosubmit>
+                      <button type="button" data-step="-1" aria-label="Kurangi">&minus;</button>
+                      <input type="number" name="quantity" value="{{ $qty }}" min="1" max="20" aria-label="Jumlah">
+                      <button type="button" data-step="1" aria-label="Tambah">+</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          @endforeach
+        </div>
+
+        <div class="col-lg-5">
+          <div class="bill">
+            <div class="bill__head"><h2>Rincian Tagihan</h2>@if($outletNm !== '')<small>{{ $outletNm }}</small>@endif</div>
+            <div class="bill__row"><span>Subtotal ({{ $items }} item)</span><b>Rp{{ number_format($total, 0, ',', '.') }}</b></div>
+            @if($mejaNo !== '')<div class="bill__note"><i class="bi bi-egg-fried"></i> Diantar langsung ke <b class="text-rust">Meja {{ $mejaNo }}</b></div>@endif
+            <div class="bill__total">
+              <div><small>TOTAL BAYAR</small><span>Sudah termasuk semua item</span></div>
+              <strong data-live-slot="cart-total" data-live-tick>Rp{{ number_format($total, 0, ',', '.') }}</strong>
+            </div>
           </div>
-          <a href="{{ url('/checkout') }}" class="btn btn-primary w-100">Lanjut ke checkout</a>
+          <a href="{{ url('/checkout') }}" class="btn btn-primary btn-xl w-100 mt-3 checkout-cta">
+            <span><i class="bi bi-lightning-charge-fill"></i> Lanjut ke Checkout</span>
+            <b>Rp{{ number_format($total, 0, ',', '.') }} <i class="bi bi-arrow-right"></i></b>
+          </a>
         </div>
       </div>
-    </div>
-  @endif
+    @endif
+  </div>
 @endsection

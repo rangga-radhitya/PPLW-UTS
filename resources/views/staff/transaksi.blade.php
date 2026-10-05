@@ -12,12 +12,12 @@
     @else
       <div class="table-responsive">
         <table class="table mb-0">
-          <thead><tr><th>Tanggal</th><th>Pesanan</th><th>Meja</th><th>Metode</th><th>Status</th><th class="text-end">Jumlah</th></tr></thead>
+          <thead><tr><th>Tanggal (WIB)</th><th>Pesanan</th><th>Meja</th><th>Metode</th><th>Status</th><th class="text-end">Jumlah</th></tr></thead>
           <tbody>
             @foreach($payments as $payment)
               <tr>
-                <td class="small">{{ optional($payment->paid_at ?? $payment->created_at)->format('d M Y, H:i') }}</td>
-                <td><a href="{{ url('/staff/pesanan/'.$payment->order_id) }}">#{{ $payment->order_id }}</a></td>
+                <td class="small">{{ ($waktu = $payment->paid_at ?? $payment->created_at) ? \Carbon\Carbon::parse($waktu)->locale('id')->translatedFormat('d M Y, H:i') : '-' }}</td>
+                <td><a href="{{ url('/staff/pesanan/'.$payment->order_id) }}"><x-order-code :id="$payment->order_id" /></a></td>
                 <td>{{ optional(optional($payment->order)->table)->table_number }}</td>
                 <td>{{ $payment->method === 'qris' ? 'QRIS' : 'Tunai' }}</td>
                 <td><x-pay-badge :status="$payment->status" /></td>

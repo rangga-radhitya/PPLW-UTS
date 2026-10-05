@@ -26,14 +26,13 @@
                   <form method="POST" action="{{ url('/staff/menu/'.$menu->id.'/ketersediaan') }}">
                     @csrf @method('PATCH')
                     <input type="hidden" name="is_available" value="{{ $menu->is_available ? 0 : 1 }}">
-                    <button class="btn btn-sm {{ $menu->is_available ? 'btn-primary' : 'btn-outline-secondary' }}" title="Klik untuk mengubah">
-                      {{ $menu->is_available ? 'Tersedia' : 'Habis' }}
-                    </button>
+                    <button class="switch {{ $menu->is_available ? 'is-on' : '' }}" role="switch" aria-checked="{{ $menu->is_available ? 'true' : 'false' }}" title="Klik untuk mengubah"><span></span></button>
+                    <small class="ms-1 fw-bold {{ $menu->is_available ? 'text-rust' : 'text-muted' }}">{{ $menu->is_available ? 'Tersedia' : 'Habis' }}</small>
                   </form>
                 </td>
                 <td class="text-end text-nowrap">
                   <a href="{{ url('/staff/menu/'.$menu->id.'/edit') }}" class="btn btn-sm btn-outline-primary">Ubah</a>
-                  <form method="POST" action="{{ url('/staff/menu/'.$menu->id) }}" class="d-inline" data-confirm="Hapus menu {{ $menu->name }}?">
+                  <form method="POST" action="{{ url('/staff/menu/'.$menu->id) }}" class="d-inline" data-confirm="Hapus menu {{ $menu->name }}?" data-confirm-title="Hapus data?" data-confirm-ok="Ya, hapus" data-confirm-danger>
                     @csrf @method('DELETE')
                     <button class="btn btn-sm btn-outline-danger">Hapus</button>
                   </form>
